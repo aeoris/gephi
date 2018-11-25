@@ -17,6 +17,7 @@ addons:
     - libboost-all-dev
     - liblzma-dev
   homebrew:
+    update: true
     packages:
     - gnupg
 
