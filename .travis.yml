@@ -2,8 +2,6 @@ sudo: false
 language: java
 matrix:
   include:
-    - os: linux
-      jdk: oraclejdk8
     - os: osx
       osx_image: xcode7.3
 branches:
@@ -27,6 +25,7 @@ cache:
     - $HOME/.m2
 
 before_install:
+  - if [ "$TRAVIS_OS_NAME" == "osx" ]; then which gpg ; which gpg2 ; fi
   # Fix java home path issue on osx (issue #2839)
   - if [ "$TRAVIS_OS_NAME" == "osx" ]; then export JAVA_HOME=$(/usr/libexec/java_home);fi
 
@@ -40,7 +39,6 @@ before_install:
   - if [ "$TRAVIS_OS_NAME" == "osx" ]; then ./src/travis/add-key.sh;fi
 
   # GPG install
-  - if [ "$TRAVIS_OS_NAME" == "osx" ]; then which gpg ; which gpg2 ; fi
   - openssl aes-256-cbc -k "$GPG_PUBRING_ENCRYPTION" -in "$TRAVIS_BUILD_DIR/src/travis/pubring.gpg.enc" -d -a -out "$TRAVIS_BUILD_DIR/src/travis/pubring.gpg"
   - openssl aes-256-cbc -k "$GPG_SECRETRING_ENCRYPTION" -in "$TRAVIS_BUILD_DIR/src/travis/secretring.gpg.enc" -d -a -out "$TRAVIS_BUILD_DIR/src/travis/secretring.gpg"
 
