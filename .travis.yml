@@ -18,6 +18,9 @@ addons:
     - cmake
     - libboost-all-dev
     - liblzma-dev
+  homebrew:
+    packages:
+    - gnupg
 
 cache:
   directories:
@@ -37,7 +40,7 @@ before_install:
   - if [ "$TRAVIS_OS_NAME" == "osx" ]; then ./src/travis/add-key.sh;fi
 
   # GPG install
-  - if [ "$TRAVIS_OS_NAME" == "osx" ]; then brew update && brew unlink gnupg && brew install gnupg && export PATH="/usr/local/opt/gnupg/bin:$PATH";fi
+  - if [ "$TRAVIS_OS_NAME" == "osx" ]; then which gpg ; which gpg2 ; fi
   - openssl aes-256-cbc -k "$GPG_PUBRING_ENCRYPTION" -in "$TRAVIS_BUILD_DIR/src/travis/pubring.gpg.enc" -d -a -out "$TRAVIS_BUILD_DIR/src/travis/pubring.gpg"
   - openssl aes-256-cbc -k "$GPG_SECRETRING_ENCRYPTION" -in "$TRAVIS_BUILD_DIR/src/travis/secretring.gpg.enc" -d -a -out "$TRAVIS_BUILD_DIR/src/travis/secretring.gpg"
 
